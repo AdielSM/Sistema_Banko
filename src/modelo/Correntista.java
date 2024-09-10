@@ -22,4 +22,8 @@ public class Correntista {
         }
         return saldoTotal;
     }
+
+    public String getCpf() {
+        return this.cpf;
+    }
 }
