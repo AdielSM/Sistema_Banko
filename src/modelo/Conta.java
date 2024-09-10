@@ -8,10 +8,9 @@ public class Conta {
     private double saldo;
     private ArrayList<Correntista> correntistas;
 
-    public Conta(int id, String data, double saldo) {
+    public Conta(int id, String data) {
         this.id = id;
         this.data = data;
-        this.saldo = saldo;
         this.correntistas = new ArrayList<>();
     }
 
@@ -19,15 +18,23 @@ public class Conta {
         return saldo;
     }
 
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
     public void creditar(double valor) {
         this.saldo += valor;
     }
 
-    public void debitar(double valor) {
-        this.saldo -= valor;
+    public void debitar(double valor) throws Exception {
+        if (valor <= this.saldo) {
+            this.saldo -= valor;
+            return;
+        }
+        throw new Exception("Saldo insuficiente");
     }
 
-    public void transferir(double valor, Conta destino) {
+    public void transferir(double valor, Conta destino) throws Exception {
         this.debitar(valor);
         destino.creditar(valor);
     }

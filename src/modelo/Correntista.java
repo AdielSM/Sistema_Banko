@@ -6,7 +6,7 @@ public class Correntista {
     private final String cpf;
     private String nome;
     private String senha;
-    private ArrayList<Conta> contas;
+    private final ArrayList<Conta> contas;
 
     public Correntista(String cpf, String nome, String senha) {
         this.cpf = cpf;
