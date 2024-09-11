@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Repositorio {
-    private ArrayList<Conta> contas;
-    private ArrayList<Correntista> correntistas;
+    private final ArrayList<Conta> contas;
+    private final ArrayList<Correntista> correntistas;
 
     public Repositorio() {
         this.contas = new ArrayList<>();
@@ -19,8 +19,14 @@ public class Repositorio {
         this.contas.add(conta);
     }
 
-    public void adicionarCorrentista(Correntista correntista) {
+    public void adicionarCorrentista(Correntista correntista) throws Exception {
+        this.buscarCpfExistente(correntista.getCpf());
         this.correntistas.add(correntista);
+    }
+
+    public void buscarCpfExistente(String cpf) throws Exception {
+        var unsed = this.buscarCorrentista(cpf);
+        throw new Exception("CPF já cadastrado");
     }
 
     public Correntista buscarCorrentista(String cpf) {
@@ -42,15 +48,22 @@ public class Repositorio {
         return this.contas;
     }
 
-    public void criarCorrentista(String cpf, String nome, String senha) throws Exception {
-        Correntista correntista = new Correntista(cpf, nome, senha);
-        this.validarCpf(cpf);
-        this.adicionarCorrentista(correntista);
-    }
-    private void validarCpf(String cpf) throws Exception {
-        if (this.buscarCorrentista(cpf) != null) {
-            throw new Exception("CPF já cadastrado");
+    public int getNewContaId() {
+        if (this.contas.isEmpty()) {
+            return 1;
         }
-
+        return this.contas.size() + 1;
     }
+
+
+//    public void criarConta(String cpf) throws Exception {
+//        Correntista correntista = this.buscarCorrentista(cpf);
+//        LocalDate data = LocalDate.now();
+//        Conta conta = new Conta(contaId, data.toString());
+//        Repositorio.contaId++;
+//        correntista.adicionarConta(conta);
+//        this.adicionarConta(conta);
+//    }
+
+
 }

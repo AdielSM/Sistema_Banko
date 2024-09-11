@@ -22,6 +22,17 @@ public class Conta {
         this.saldo = saldo;
     }
 
+    public void adicionarCorrentista(Correntista correntista) throws Exception {
+
+        for (Correntista correntista1 : correntistas) {
+            if (correntista1.getCpf().equals(correntista.getCpf())) {
+                throw new Exception("Correntista já cadastrado nesta conta");
+            }
+        }
+
+        this.correntistas.add(correntista);
+    }
+
     public void creditar(double valor) {
         this.saldo += valor;
     }

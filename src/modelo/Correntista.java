@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class Correntista {
     private final String cpf;
     private String nome;
-    private String senha;
+    private int senha;
     private final ArrayList<Conta> contas;
 
-    public Correntista(String cpf, String nome, String senha) {
+    public Correntista(String cpf, String nome, int senha) {
         this.cpf = cpf;
         this.nome = nome;
         this.senha = senha;
@@ -23,7 +23,15 @@ public class Correntista {
         return saldoTotal;
     }
 
+    public void adicionarConta(Conta conta) {
+        this.contas.add(conta);
+    }
+
     public String getCpf() {
         return this.cpf;
+    }
+
+    public int getQuantidadeContas(){
+        return this.contas.size();
     }
 }
