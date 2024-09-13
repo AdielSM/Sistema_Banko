@@ -51,4 +51,11 @@ public class Conta {
     }
 
 
+    public int getId() {
+        return this.id;
+    }
+
+    public ArrayList<Correntista> getCorrentistas() {
+        return new ArrayList<>(this.correntistas);
+    }
 }

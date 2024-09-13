@@ -20,12 +20,15 @@ public class Repositorio {
     }
 
     public void adicionarCorrentista(Correntista correntista) throws Exception {
-        this.buscarCpfExistente(correntista.getCpf());
+        this.validarCpfExistente(correntista.getCpf());
         this.correntistas.add(correntista);
     }
 
-    public void buscarCpfExistente(String cpf) throws Exception {
-        var unsed = this.buscarCorrentista(cpf);
+    public void validarCpfExistente(String cpf) throws Exception {
+        Correntista correntista = this.buscarCorrentista(cpf);
+        if (correntista == null){
+            return;
+        }
         throw new Exception("CPF já cadastrado");
     }
 
@@ -54,6 +57,32 @@ public class Repositorio {
         }
         return this.contas.size() + 1;
     }
+
+    public Conta buscarConta(int id) {
+        for (Conta conta : contas) {
+            if (conta.getId() == id) {
+                return conta;
+            }
+        }
+        return null;
+    }
+
+    public void removerConta(Conta conta) {
+        this.contas.remove(conta);
+    }
+
+    public boolean correntistaTitular(String cpf, Conta conta) throws Exception {
+        Correntista correntista = this.buscarCorrentista(cpf);
+
+        if (correntista == null){
+            throw new Exception("Cpf do correntista não encontrado");
+        }
+
+        ArrayList <Correntista> correntistas = conta.getCorrentistas();
+        return correntistas.getFirst().equals(correntista);
+    }
+
+//    public void removerConta()
 
 
 //    public void criarConta(String cpf) throws Exception {
