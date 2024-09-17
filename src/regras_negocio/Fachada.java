@@ -16,14 +16,32 @@ public class Fachada {
     public Fachada() {
     }
 
+        /**
+     * Lista todos os correntistas ordenados pelo cpf.
+     *
+     * @return uma lista de todos os correntistas
+     */
     public static ArrayList<Correntista> listarCorrentistas() {
         return repositorio.listarCorrentistas();
     }
 
+    /**
+     * Lista todas as contas.
+     *
+     * @return uma lista de todas as contas
+     */
     public static ArrayList<Conta> listarContas() {
         return repositorio.listarContas();
     }
 
+        /**
+     * Cria um novo correntista.
+     *
+     * @param cpf   o CPF do correntista
+     * @param nome  o nome do correntista
+     * @param senha a senha do correntista
+     * @throws Exception se o CPF já estiver cadastrado ou se a senha não atender aos critérios de validação
+     */
     public static void criarCorrentista(String cpf, String nome, String senha) throws Exception {
         repositorio.validarCpfExistente(cpf);
         Fachada.verificarSenha(senha);
@@ -31,6 +49,12 @@ public class Fachada {
         repositorio.adicionarCorrentista(correntista);
     }
 
+        /**
+     * Verifica se a senha atende aos critérios de validação.
+     *
+     * @param senha a senha a ser verificada
+     * @throws Exception se a senha não contiver apenas números ou se não tiver 4 dígitos
+     */
     private static void verificarSenha(String senha) throws Exception {
         String regex = "^\\d+$";
         if (!senha.matches(regex)) {
@@ -41,15 +65,21 @@ public class Fachada {
         }
     }
 
+        /**
+     * Cria uma nova conta para um correntista.
+     *
+     * @param cpf o CPF do correntista
+     * @throws Exception se o CPF do correntista não for encontrado ou se o correntista já for titular de uma conta
+     */
     public static void criarConta(String cpf) throws Exception {
         String dataFormatada = Fachada.dataAtual();
 
         Correntista correntista = repositorio.buscarCorrentista(cpf);
-        if(correntista == null){
+        if (correntista == null) {
             throw new Exception("Cpf do correntista não encontrado");
         }
 
-        if(correntista.getQuantidadeContas() != 0){
+        if (correntista.getQuantidadeContas() != 0) {
             throw new Exception("O Correntista deste Cpf já é titular de uma conta");
         }
 
@@ -59,6 +89,13 @@ public class Fachada {
         conta.adicionarCorrentista(correntista);
     }
 
+        /**
+     * Cria uma conta especial para um correntista.
+     *
+     * @param cpf    o CPF do correntista
+     * @param limite o limite da conta especial
+     * @throws Exception se o CPF do correntista não for encontrado ou se o correntista já for titular de uma conta
+     */
     public static void criarContaEspecial(String cpf, double limite) throws Exception {
         String dataFormatada = Fachada.dataAtual();
 
@@ -77,10 +114,22 @@ public class Fachada {
         conta.adicionarCorrentista(correntista);
     }
 
+        /**
+     * Retorna a data atual formatada como uma string no formato "dd/MM/yyyy".
+     *
+     * @return a data atual formatada
+     */
     private static String dataAtual() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
+        /**
+     * Insere um correntista em uma conta existente.
+     *
+     * @param cpf o CPF do correntista
+     * @param id  o ID da conta
+     * @throws Exception se o CPF do correntista não for encontrado ou se o ID da conta não for encontrado
+     */
     public static void inserirCorrentistaConta(String cpf, int id) throws Exception {
         Correntista correntista = repositorio.buscarCorrentista(cpf);
         if(correntista == null){
@@ -96,6 +145,14 @@ public class Fachada {
         conta.adicionarCorrentista(correntista);
     }
 
+        /**
+     * Remove um correntista de uma conta.
+     *
+     * @param cpf o CPF do correntista
+     * @param id  o ID da conta
+     * @throws Exception se o CPF do correntista não for encontrado, se o ID da conta não for encontrado,
+     *                   ou se o correntista for titular da conta
+     */
     public static void removerCorrentistaConta(String cpf, int id) throws Exception {
         Correntista correntista = repositorio.buscarCorrentista(cpf);
         if(correntista == null){
@@ -115,17 +172,37 @@ public class Fachada {
         throw new Exception("O correntista é titular desta conta, portanto não pode ser removido");
     }
 
+    /**
+     * Apaga uma conta do repositório, removendo também os correntistas associados.
+     *
+     * @param id o ID da conta a ser apagada
+     * @throws Exception se a conta não for encontrada, se a conta ainda possuir saldo ou se ocorrer um erro ao desvincular correntistas
+     */
     public static void apagarConta(int id) throws Exception {
         Conta conta = repositorio.buscarConta(id);
 
-        if(conta == null){
-            throw new Exception("Id da conta não encontrado" );
+        if (conta == null) {
+            throw new Exception("Id da conta não encontrado");
+        }
+
+        if (conta.getSaldo() != 0) {
+            throw new Exception("A conta não pode ser apagada pois ainda possui saldo");
         }
 
         conta.desvincularCorrentistas();
         repositorio.removerConta(conta);
     }
 
+    /**
+     * Credita um valor em uma conta.
+     *
+     * @param id     o ID da conta
+     * @param cpf    o CPF do correntista
+     * @param senha  a senha do correntista
+     * @param valor  o valor a ser creditado
+     * @throws Exception se a conta não for encontrada, se o CPF do correntista não for encontrado,
+     *                   se a senha for inválida ou se o valor for inválido
+     */
     public static void creditarValor(int id, String cpf, String senha, double valor) throws Exception {
         Conta conta = repositorio.buscarConta(id);
         if(conta == null){
@@ -141,14 +218,24 @@ public class Fachada {
         conta.creditar(valor);
     }
 
+        /**
+     * Debita um valor de uma conta.
+     *
+     * @param id     o ID da conta
+     * @param cpf    o CPF do correntista
+     * @param senha  a senha do correntista
+     * @param valor  o valor a ser debitado
+     * @throws Exception se a conta não for encontrada, se o CPF do correntista não for encontrado,
+     *                   se a senha for inválida ou se o saldo for insuficiente
+     */
     public static void debitarValor(int id, String cpf, String senha, double valor) throws Exception {
         Conta conta = repositorio.buscarConta(id);
-        if(conta == null){
+        if (conta == null) {
             throw new Exception("Id da conta não encontrado");
         }
 
         Correntista correntista = repositorio.buscarCorrentista(cpf);
-        if(correntista == null){
+        if (correntista == null) {
             throw new Exception("Cpf do correntista não encontrado");
         }
 
@@ -156,6 +243,17 @@ public class Fachada {
         conta.debitar(valor);
     }
 
+    /**
+     * Transfere um valor de uma conta para outra.
+     *
+     * @param id1   o ID da conta de origem
+     * @param cpf   o CPF do correntista que está realizando a transferência
+     * @param senha a senha do correntista
+     * @param valor o valor a ser transferido
+     * @param id2   o ID da conta de destino
+     * @throws Exception se qualquer uma das contas não for encontrada, se o CPF do correntista não for encontrado,
+     *                   se a senha for inválida ou se o saldo for insuficiente
+     */
     public static void transferirValor(int id1, String cpf, String senha, double valor, int id2) throws Exception {
         Conta conta1 = repositorio.buscarConta(id1);
         Conta conta2 = repositorio.buscarConta(id2);
