@@ -48,4 +48,10 @@ public class Correntista {
     public int getQuantidadeContas(){
         return this.contas.size();
     }
+
+    public void validarSenha(String senha) throws Exception {
+        if (!this.senha.equals(senha)) {
+            throw new Exception("Senha inválida");
+        }
+    }
 }

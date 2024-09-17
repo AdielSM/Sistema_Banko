@@ -48,7 +48,7 @@ public class Repositorio {
     }
 
     public ArrayList<Conta> listarContas() {
-        return this.contas;
+        return new ArrayList<>(this.contas);
     }
 
     public int getNewContaId() {
@@ -67,17 +67,14 @@ public class Repositorio {
         return null;
     }
 
-    public void removerConta(Conta conta) {
-        this.contas.remove(conta);
+    public void removerConta(Conta conta) throws Exception {
+        if (this.contas.remove(conta)) {
+            return;
+        }
+        throw new Exception("Conta não encontrada");
     }
 
-    public boolean correntistaTitular(String cpf, Conta conta) throws Exception {
-        Correntista correntista = this.buscarCorrentista(cpf);
-
-        if (correntista == null){
-            throw new Exception("Cpf do correntista não encontrado");
-        }
-
+    public boolean correntistaTitular(Correntista correntista, Conta conta) throws Exception {
         ArrayList <Correntista> correntistas = conta.getCorrentistas();
         return correntistas.getFirst().equals(correntista);
     }

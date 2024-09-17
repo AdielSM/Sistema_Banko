@@ -55,8 +55,8 @@ public class Fachada {
 
         Conta conta = new Conta(repositorio.getNewContaId(), dataFormatada);
         repositorio.adicionarConta(conta);
-//        correntista.adicionarConta(conta);
-//        conta.adicionarCorrentista(correntista);
+        correntista.adicionarConta(conta);
+        conta.adicionarCorrentista(correntista);
     }
 
     public static void criarContaEspecial(String cpf, double limite) throws Exception {
@@ -107,17 +107,74 @@ public class Fachada {
             throw new Exception("Id da conta não encontrado");
         }
 
-        correntista.removerConta(conta);
-//        boolean correntistaTitular = repositorio.correntistaTitular(cpf, conta);
-//        if(!correntistaTitular){
-//            repositorio.removerConta(conta);
-//            return;
-//        }
-//        throw new Exception("O correntista é titular desta conta, portanto não pode ser removido");
+        boolean correntistaTitular = repositorio.correntistaTitular(correntista, conta);
+        if(!correntistaTitular){
+            correntista.removerConta(conta);
+            return;
+        }
+        throw new Exception("O correntista é titular desta conta, portanto não pode ser removido");
     }
 
+    public static void apagarConta(int id) throws Exception {
+        Conta conta = repositorio.buscarConta(id);
 
+        if(conta == null){
+            throw new Exception("Id da conta não encontrado" );
+        }
 
+        conta.desvincularCorrentistas();
+        repositorio.removerConta(conta);
+    }
 
+    public static void creditarValor(int id, String cpf, String senha, double valor) throws Exception {
+        Conta conta = repositorio.buscarConta(id);
+        if(conta == null){
+            throw new Exception("Id da conta não encontrado");
+        }
+
+        Correntista correntista = repositorio.buscarCorrentista(cpf);
+        if(correntista == null){
+            throw new Exception("Cpf do correntista não encontrado");
+        }
+
+        correntista.validarSenha(senha);
+        conta.creditar(valor);
+    }
+
+    public static void debitarValor(int id, String cpf, String senha, double valor) throws Exception {
+        Conta conta = repositorio.buscarConta(id);
+        if(conta == null){
+            throw new Exception("Id da conta não encontrado");
+        }
+
+        Correntista correntista = repositorio.buscarCorrentista(cpf);
+        if(correntista == null){
+            throw new Exception("Cpf do correntista não encontrado");
+        }
+
+        correntista.validarSenha(senha);
+        conta.debitar(valor);
+    }
+
+    public static void transferirValor(int id1, String cpf, String senha, double valor, int id2) throws Exception {
+        Conta conta1 = repositorio.buscarConta(id1);
+        Conta conta2 = repositorio.buscarConta(id2);
+
+        if(conta1 == null){
+            throw new Exception("Id da conta 1 não encontrado");
+        }
+
+        if(conta2 == null){
+            throw new Exception("Id da conta 2 não encontrado");
+        }
+
+        Correntista correntista = repositorio.buscarCorrentista(cpf);
+        if(correntista == null){
+            throw new Exception("Cpf do correntista não encontrado");
+        }
+
+        correntista.validarSenha(senha);
+        conta1.transferir(valor, conta2);
+    }
 
 }
