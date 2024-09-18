@@ -55,7 +55,7 @@ public class Repositorio {
         if (this.contas.isEmpty()) {
             return 1;
         }
-        return this.contas.size() + 1;
+        return this.contas.getLast().getId() + 1;
     }
 
     public Conta buscarConta(int id) {
