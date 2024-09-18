@@ -53,15 +53,7 @@ public class Conta {
     }
 
     public void transferir(double valor, Conta destino) throws Exception {
-        if (valor < 0.01) {
-            throw new Exception("Valor inválido");
-        }
-
-        if (this.saldo < valor) {
-            throw new Exception("Saldo insuficiente");
-        }
-
-        this.saldo -= valor;
+        this.debitar(valor);
         destino.creditar(valor);
     }
 
