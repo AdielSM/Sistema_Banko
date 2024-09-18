@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Correntista {
     private final String cpf;
     private String nome;
-    private String senha;
+    private final String senha;
     private final ArrayList<Conta> contas;
 
     public Correntista(String cpf, String nome, String senha) {
@@ -45,13 +45,18 @@ public class Correntista {
         return this.cpf;
     }
 
-    public int getQuantidadeContas(){
-        return this.contas.size();
-    }
-
     public void validarSenha(String senha) throws Exception {
         if (!this.senha.equals(senha)) {
             throw new Exception("Senha inválida");
         }
+    }
+
+    public boolean correntistaTitularConta(){
+        for (Conta conta : this.contas){
+            if(conta.getCorrentistas().getFirst().equals(this)){
+                return true;
+            }
+        }
+        return false;
     }
 }

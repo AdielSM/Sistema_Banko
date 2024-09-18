@@ -79,8 +79,8 @@ public class Fachada {
             throw new Exception("Cpf do correntista não encontrado");
         }
 
-        if (correntista.getQuantidadeContas() != 0) {
-            throw new Exception("O Correntista deste Cpf já é titular de uma conta");
+        if (correntista.correntistaTitularConta()) {
+            throw new Exception("O Correntista deste Cpf já é titular de alguma outra conta");
         }
 
         Conta conta = new Conta(repositorio.getNewContaId(), dataFormatada);
@@ -104,8 +104,8 @@ public class Fachada {
             throw new Exception("Cpf do correntista não encontrado");
         }
 
-        if(correntista.getQuantidadeContas() != 0){
-            throw new Exception("O Correntista deste Cpf já é titular de uma conta");
+        if (correntista.correntistaTitularConta()) {
+            throw new Exception("O Correntista deste Cpf já é titular de alguma outra conta");
         }
 
         ContaEspecial conta = new ContaEspecial(repositorio.getNewContaId(), dataFormatada, limite);
