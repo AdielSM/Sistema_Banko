@@ -148,12 +148,16 @@ public class Repositorio {
 				ids = partes[3];
 				limite = partes[4];
 				if (limite.equals("-")) {
+					cc = new Conta(Integer.parseInt(id), data, Double.parseDouble(saldo));
+
+				} else {					
 					cc = new ContaEspecial(Integer.parseInt(id), data, Double.parseDouble(saldo), Double.parseDouble(limite));
 				}
-				cc = new Conta(Integer.parseInt(id), data, Double.parseDouble(saldo));
+
 				this.adicionar(cc);
 				
-			    if(!ids.isEmpty()) {	
+			    if(!ids.isEmpty()) {
+			        ids = ids.replace("[", "").replace("]", "");
 					for(String cpf : ids.split(",")){	//converter string em array
 						Correntista correntista = this.buscarCorrentista(cpf);
 						cc.adicionarCorrentista(correntista);
@@ -163,6 +167,7 @@ public class Repositorio {
 			}
 			arquivo1.close();
         }  catch(Exception ex)		{
+        	System.out.println(ex);
 			throw new RuntimeException("leitura arquivo de contas:"+ex.getMessage());
 		}   
         
