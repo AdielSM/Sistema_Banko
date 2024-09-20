@@ -14,6 +14,10 @@ public class Conta {
         this.correntistas = new ArrayList<>();
     }
 
+    public String getData() {
+        return this.data;
+    }
+
     public double getSaldo() {
         return saldo;
     }
