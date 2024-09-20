@@ -117,7 +117,7 @@ public class Repositorio {
         
         try {
             String cpf, nome, senha;
-            File f2 = new File( new File("correntista.csv").getCanonicalPath() )  ;
+            File f2 = new File( new File("correntistas.csv").getCanonicalPath() )  ;
 			Scanner arquivo2 = new Scanner(f2);	 
 			while(arquivo2.hasNextLine()) 	{
 				linha = arquivo2.nextLine().trim();		
