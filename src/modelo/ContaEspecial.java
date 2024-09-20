@@ -12,7 +12,7 @@ public class ContaEspecial extends Conta{
 
     private void validarLimite(double valor) throws Exception {
         if (valor < LIMITE_MINIMO){
-            throw new Exception("O limite deve ser maior que 50");
+            throw new Exception("O limite de uma conta especial deve ser maior ou igual a 50.");
         }
     }
 
