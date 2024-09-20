@@ -44,6 +44,14 @@ public class Correntista {
     public String getCpf() {
         return this.cpf;
     }
+    
+    public String getNome() {
+    	return this.nome;
+    }
+    
+    public String getSenha() {
+    	return this.senha;
+    }
 
     public void validarSenha(String senha) throws Exception {
         if (!this.senha.equals(senha)) {

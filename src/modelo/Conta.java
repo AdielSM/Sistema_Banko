@@ -13,6 +13,13 @@ public class Conta {
         this.data = data;
         this.correntistas = new ArrayList<>();
     }
+    
+    public Conta(int id, String data, double saldo) {
+        this.id = id;
+        this.data = data;
+        this.saldo = saldo;
+        this.correntistas = new ArrayList<>();
+    }
 
     public String getData() {
         return this.data;
@@ -67,6 +74,15 @@ public class Conta {
 
     public ArrayList<Correntista> getCorrentistas() {
         return new ArrayList<>(this.correntistas);
+    }
+    
+    public ArrayList<String> getCorrentistasIds() {
+    	ArrayList<String> ids = new ArrayList<>();
+    	ArrayList<Correntista> corr = this.getCorrentistas();
+    	for (Correntista c : corr) {
+    		ids.add(c.getCpf());
+    	}
+    	return ids;
     }
 
     public void desvincularCorrentistas() throws Exception {

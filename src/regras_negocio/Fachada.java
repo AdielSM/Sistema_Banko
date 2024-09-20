@@ -47,6 +47,7 @@ public class Fachada {
         Fachada.verificarSenha(senha);
         Correntista correntista = new Correntista(cpf, nome, senha);
         repositorio.adicionarCorrentista(correntista);
+        repositorio.salvarObjetos();
     }
 
         /**
@@ -87,6 +88,8 @@ public class Fachada {
         repositorio.adicionarConta(conta);
         correntista.adicionarConta(conta);
         conta.adicionarCorrentista(correntista);
+        
+        repositorio.salvarObjetos();
     }
 
         /**
@@ -112,6 +115,8 @@ public class Fachada {
         repositorio.adicionarConta(conta);
         correntista.adicionarConta(conta);
         conta.adicionarCorrentista(correntista);
+        
+        repositorio.salvarObjetos();
     }
 
         /**
@@ -143,6 +148,8 @@ public class Fachada {
 
         correntista.adicionarConta(conta);
         conta.adicionarCorrentista(correntista);
+        
+        repositorio.salvarObjetos();
     }
 
         /**
@@ -167,6 +174,7 @@ public class Fachada {
         boolean correntistaTitular = repositorio.correntistaTitular(correntista, conta);
         if(!correntistaTitular){
             correntista.removerConta(conta);
+            repositorio.salvarObjetos();
             return;
         }
         throw new Exception("O correntista é titular desta conta, portanto não pode ser removido");
@@ -191,6 +199,7 @@ public class Fachada {
 
         conta.desvincularCorrentistas();
         repositorio.removerConta(conta);
+        repositorio.salvarObjetos();
     }
 
     /**
@@ -216,6 +225,8 @@ public class Fachada {
 
         correntista.validarSenha(senha);
         conta.creditar(valor);
+        
+        repositorio.salvarObjetos();
     }
 
         /**
@@ -241,6 +252,8 @@ public class Fachada {
 
         correntista.validarSenha(senha);
         conta.debitar(valor);
+        
+        repositorio.salvarObjetos();
     }
 
     /**
@@ -273,6 +286,8 @@ public class Fachada {
 
         correntista.validarSenha(senha);
         conta1.transferir(valor, conta2);
+        
+        repositorio.salvarObjetos();
     }
 
 }

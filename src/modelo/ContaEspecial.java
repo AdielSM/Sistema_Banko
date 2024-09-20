@@ -9,11 +9,21 @@ public class ContaEspecial extends Conta{
         this.validarLimite(limite);
         this.limite = limite;
     }
+    
+    public ContaEspecial(int id, String data, double saldo, double limite) throws Exception {
+        super(id, data, saldo);
+        this.validarLimite(limite);
+        this.limite = limite;
+    }
 
     private void validarLimite(double valor) throws Exception {
         if (valor < LIMITE_MINIMO){
             throw new Exception("O limite de uma conta especial deve ser maior ou igual a 50.");
         }
+    }
+    
+    public double getLimite() {
+    	return this.limite;
     }
 
     @Override
