@@ -170,7 +170,7 @@ public class Repositorio {
     
     public void	salvarObjetos()  {
 		try	{
-            File f = new File( new File("contas.csv").getCanonicalPath() )  ;
+	        File f = new File(Paths.get(".", "contas.csv").toAbsolutePath().normalize().toString());
 			FileWriter arquivo1 = new FileWriter(f); 
 			for(Conta c : contas) 	{
 				  if (c instanceof ContaEspecial) {
@@ -187,7 +187,7 @@ public class Repositorio {
 		}
 		
 		try	{
-            File f = new File( new File("correntistas.csv").getCanonicalPath() )  ;
+	        File f = new File(Paths.get(".", "correntistas.csv").toAbsolutePath().normalize().toString());
 			FileWriter arquivo2 = new FileWriter(f); 
 			for(Correntista c : correntistas) 	{				  
 				arquivo2.write(c.getCpf() + ";" + c.getNome() + ";" + c.getSenha() + "\n");
