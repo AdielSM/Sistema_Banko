@@ -4,7 +4,13 @@ public class ContaEspecial extends Conta{
     private final double limite;
     private static final int LIMITE_MINIMO = 50;
 
-    public ContaEspecial(int id, String data,double limite) throws Exception {
+    @Override
+	public String toString() {
+		return "ContaEspecial [limite=" + limite + ", getData()=" + getData() + ", getSaldo()=" + getSaldo()
+				+ ", getId()=" + getId() + ", getCorrentistas()=" + getCorrentistas() + "]";
+	}
+
+	public ContaEspecial(int id, String data,double limite) throws Exception {
         super(id, data);
         this.validarLimite(limite);
         this.limite = limite;

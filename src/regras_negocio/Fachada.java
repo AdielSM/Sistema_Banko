@@ -22,7 +22,15 @@ public class Fachada {
      * @return uma lista de todos os correntistas
      */
     public static ArrayList<Correntista> listarCorrentistas() {
-        return repositorio.listarCorrentistas();
+    	return repositorio.listarCorrentistas();
+    }
+    
+    public static ArrayList<Correntista> listarCorrentistas(String filtro) {
+    	ArrayList<Correntista> lista = new ArrayList<>();
+    	for(Correntista c : repositorio.listarCorrentistas())
+			if(c.getNome().contains(filtro) ||  c.getCpf().contains(filtro))
+				lista.add(c);
+		return lista;
     }
 
     /**
@@ -45,12 +53,20 @@ public class Fachada {
     public static void criarCorrentista(String cpf, String nome, String senha) throws Exception {
         repositorio.validarCpfExistente(cpf);
         Fachada.verificarSenha(senha);
+        Fachada.verificarCpf(cpf);
         Correntista correntista = new Correntista(cpf, nome, senha);
         repositorio.adicionarCorrentista(correntista);
         repositorio.salvarObjetos();
     }
 
-        /**
+        private static void verificarCpf(String cpf) throws Exception {
+        	String regex = "^\\d+$";
+            if (!cpf.matches(regex)) {
+                throw new Exception("O CPF deve conter apenas números");
+            }
+		}
+
+		/**
      * Verifica se a senha atende aos critérios de validação.
      *
      * @param senha a senha a ser verificada
@@ -88,7 +104,6 @@ public class Fachada {
         repositorio.adicionarConta(conta);
         correntista.adicionarConta(conta);
         conta.adicionarCorrentista(correntista);
-        
         repositorio.salvarObjetos();
     }
 

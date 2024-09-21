@@ -59,7 +59,7 @@ public class Repositorio {
         if (this.contas.isEmpty()) {
             return 1;
         }
-        return this.contas.getLast().getId() + 1;
+        return this.contas.get(contas.size() - 1).getId() + 1;
     }
 
     public Conta buscarConta(int id) {
@@ -80,7 +80,7 @@ public class Repositorio {
 
     public boolean correntistaTitular(Correntista correntista, Conta conta) throws Exception {
         ArrayList <Correntista> correntistas = conta.getCorrentistas();
-        return correntistas.getFirst().equals(correntista);
+        return correntistas.get(0).equals(correntista);
     }
 
     

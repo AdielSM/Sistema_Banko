@@ -8,7 +8,12 @@ public class Correntista {
     private final String senha;
     private final ArrayList<Conta> contas;
 
-    public Correntista(String cpf, String nome, String senha) {
+    @Override
+	public String toString() {
+		return "Correntista [cpf=" + cpf + ", nome=" + nome + "]";
+	}
+
+	public Correntista(String cpf, String nome, String senha) {
         this.cpf = cpf;
         this.nome = nome;
         this.senha = senha;
@@ -58,12 +63,19 @@ public class Correntista {
             throw new Exception("Senha inválida");
         }
     }
-
+ 
     public boolean correntistaTitularConta(){
         for (Conta conta : this.contas){
-            if(conta.getCorrentistas().getFirst().equals(this)){
-                return true;
-            }
+        	ArrayList<Correntista> correntistas = conta.getCorrentistas();
+        	System.out.println(correntistas);
+        	System.out.println(correntistas.isEmpty());
+        	if (correntistas.isEmpty()) {
+        		continue;
+        	} else {
+        		if(conta.getCorrentistas().get(0).equals(this)){
+        			return true;
+        		}
+        	}
         }
         return false;
     }

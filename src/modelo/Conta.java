@@ -3,7 +3,12 @@ package modelo;
 import java.util.ArrayList;
 
 public class Conta {
-    private final int id;
+    @Override
+	public String toString() {
+		return "Conta [id=" + id + ", data=" + data + ", saldo=" + saldo + ", correntistas=" + correntistas + "]";
+	}
+
+	private final int id;
     private String data;
     private double saldo;
     private final ArrayList<Correntista> correntistas;
