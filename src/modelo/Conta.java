@@ -80,15 +80,6 @@ public class Conta {
     public ArrayList<Correntista> getCorrentistas() {
         return new ArrayList<>(this.correntistas);
     }
-    
-    public ArrayList<String> getCorrentistasIds() {
-    	ArrayList<String> ids = new ArrayList<>();
-    	ArrayList<Correntista> corr = this.getCorrentistas();
-    	for (Correntista c : corr) {
-    		ids.add(c.getCpf());
-    	}
-    	return ids;
-    }
 
     public void desvincularCorrentistas() throws Exception {
         for (Correntista correntista : this.correntistas) {

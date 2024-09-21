@@ -57,6 +57,17 @@ public class Correntista {
     public String getSenha() {
     	return this.senha;
     }
+    
+    public String getContasIds() {
+    	String ids = "";
+    	for (Conta c : this.contas) {
+    		ids = ids + c.getId() + ",";
+    	}
+    	if (!ids.isEmpty()) {    		
+    		ids = ids.substring(0, ids.length() - 1);
+    	}
+    	return ids;
+    }
 
     public void validarSenha(String senha) throws Exception {
         if (!this.senha.equals(senha)) {

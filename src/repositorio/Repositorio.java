@@ -116,26 +116,7 @@ public class Repositorio {
         Correntista corrCC;
         
         try {
-            String cpf, nome, senha;
-            File f2 = new File( new File("correntistas.csv").getCanonicalPath() )  ;
-			Scanner arquivo2 = new Scanner(f2);	 
-			while(arquivo2.hasNextLine()) 	{
-				linha = arquivo2.nextLine().trim();		
-				partes = linha.split(";");	
-				//System.out.println(Arrays.toString(partes));
-				cpf = partes[0];
-				nome = partes[1];
-				senha = partes[2];
-				corrCC = new Correntista(cpf, nome, senha);
-				this.adicionar(corrCC);
-			} 
-			arquivo2.close();
-        }  catch(Exception ex)		{
-			throw new RuntimeException("leitura arquivo de correntistas:"+ex.getMessage());
-		}
-        
-        try {
-            String id, data, saldo, ids, limite;
+            String id, data, saldo, limite;
             File f1 = new File( new File("contas.csv").getCanonicalPath() )  ;
 			Scanner arquivo1 = new Scanner(f1);	 
 			while(arquivo1.hasNextLine()) 	{
@@ -145,8 +126,7 @@ public class Repositorio {
 				id = partes[0];
 				data = partes[1];
 				saldo = partes[2];
-				ids = partes[3];
-				limite = partes[4];
+				limite = partes[3];
 				if (limite.equals("-")) {
 					cc = new Conta(Integer.parseInt(id), data, Double.parseDouble(saldo));
 
@@ -156,20 +136,41 @@ public class Repositorio {
 
 				this.adicionar(cc);
 				
-			    if(!ids.isEmpty()) {
-			        ids = ids.replace("[", "").replace("]", "");
-					for(String cpf : ids.split(",")){	//converter string em array
-						Correntista correntista = this.buscarCorrentista(cpf);
-						cc.adicionarCorrentista(correntista);
-						correntista.adicionarConta(cc);
-					}
-				}
 			}
 			arquivo1.close();
         }  catch(Exception ex)		{
         	System.out.println(ex);
 			throw new RuntimeException("leitura arquivo de contas:"+ex.getMessage());
 		}   
+        
+        try {
+            String cpf, nome, senha, ids;
+            File f2 = new File( new File("correntistas.csv").getCanonicalPath() )  ;
+			Scanner arquivo2 = new Scanner(f2);	 
+			while(arquivo2.hasNextLine()) 	{
+				linha = arquivo2.nextLine().trim();		
+				partes = linha.split(";");	
+				//System.out.println(Arrays.toString(partes));
+				cpf = partes[0];
+				nome = partes[1];
+				senha = partes[2];
+				ids = partes[3];
+				corrCC = new Correntista(cpf, nome, senha);
+				this.adicionar(corrCC);
+				
+			    if(!ids.isEmpty()) {
+			        ids = ids.replace("[", "").replace("]", "");
+					for(String id : ids.split(",")){	//converter string em array
+						Conta conta = this.buscarConta(Integer.parseInt(id));
+						conta.adicionarCorrentista(corrCC);
+						corrCC.adicionarConta(conta);
+					}
+				}
+			} 
+			arquivo2.close();
+        }  catch(Exception ex)		{
+			throw new RuntimeException("leitura arquivo de correntistas:"+ex.getMessage());
+		}
         
     }
     
@@ -180,27 +181,28 @@ public class Repositorio {
 			for(Conta c : contas) 	{
 				  if (c instanceof ContaEspecial) {
 				        ContaEspecial contaEspecial = (ContaEspecial) c;
-				        arquivo1.write(c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + c.getCorrentistasIds() + ";" + contaEspecial.getLimite() + "\n");
+				        arquivo1.write(c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + contaEspecial.getLimite() + "\n");
 				    } else {
-				        arquivo1.write(c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + c.getCorrentistasIds() + ";" + "-"+"\n");
+				        arquivo1.write(c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + "-"+"\n");
 				    }
 			} 
 			arquivo1.close();
 		}
 		catch(Exception e){
-			throw new RuntimeException("problema na criação do arquivo  eventos "+e.getMessage());
+			throw new RuntimeException("problema na criação do arquivo contas.csv "+e.getMessage());
 		}
 		
 		try	{
 	        File f = new File(Paths.get(".", "correntistas.csv").toAbsolutePath().normalize().toString());
 			FileWriter arquivo2 = new FileWriter(f); 
 			for(Correntista c : correntistas) 	{				  
-				arquivo2.write(c.getCpf() + ";" + c.getNome() + ";" + c.getSenha() + "\n");
+				arquivo2.write(c.getCpf() + ";" + c.getNome() + ";" + c.getSenha() + ";" + c.getContasIds() + "\n");
 			} 
 			arquivo2.close();
 		}
 		catch(Exception e){
-			throw new RuntimeException("problema na criação do arquivo  eventos "+e.getMessage());
+			System.out.println(e);
+			throw new RuntimeException("problema na criação do arquivo correntistas.csv "+e.getMessage());
 		}
 
 		
