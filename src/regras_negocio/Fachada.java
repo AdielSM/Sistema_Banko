@@ -41,6 +41,14 @@ public class Fachada {
     public static ArrayList<Conta> listarContas() {
         return repositorio.listarContas();
     }
+    
+    public static ArrayList<Conta> listarContas(String filtro) {
+    	ArrayList<Conta> lista = new ArrayList<>();
+    	for(Conta c : repositorio.listarContas())
+			if(Integer.toString(c.getId()).contains(filtro) || c.exibirCpfCorrentistas().contains(filtro))
+				lista.add(c);
+        return lista;
+    }
 
         /**
      * Cria um novo correntista.

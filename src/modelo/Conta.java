@@ -48,6 +48,12 @@ public class Conta {
 
         this.correntistas.add(correntista);
     }
+    
+    public void removerCorrentista(Correntista correntista) throws Exception {
+        if (this.correntistas.contains(correntista)) {
+        	this.correntistas.remove(correntista);
+        }
+    }
 
     public void creditar(double valor) throws Exception {
         if (valor < 0.01) {
@@ -79,6 +85,17 @@ public class Conta {
 
     public ArrayList<Correntista> getCorrentistas() {
         return new ArrayList<>(this.correntistas);
+    }
+    
+    public String exibirCpfCorrentistas() {
+    	String correntistas = "";
+    	for (Correntista c : this.correntistas) {
+    		correntistas += c.getCpf() + ", ";
+    	}
+    	if (correntistas.endsWith(", ")) {
+    		correntistas = correntistas.substring(0, correntistas.length() - 2);
+    	}
+    	return correntistas;
     }
 
     public void desvincularCorrentistas() throws Exception {

@@ -34,16 +34,17 @@ public class Correntista {
             this.contas.add(conta);
             return;
         }
-        throw new Exception("Conta já cadastrada");
+        throw new Exception("Conta já associada ao correntista");
     }
 
     public void removerConta(Conta conta) throws Exception {
         boolean contemConta = this.contas.contains(conta);
         if (contemConta) {
             this.contas.remove(conta);
+            conta.removerCorrentista(this);
             return;
         }
-        throw new Exception("Conta não cadastrada");
+        throw new Exception("Conta não associada ao correntista.");
     }
 
     public String getCpf() {
@@ -65,6 +66,8 @@ public class Correntista {
     	}
     	if (!ids.isEmpty()) {    		
     		ids = ids.substring(0, ids.length() - 1);
+    	} else {
+    		ids = "-";
     	}
     	return ids;
     }

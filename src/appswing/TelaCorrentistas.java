@@ -121,14 +121,14 @@ public class TelaCorrentistas {
 		nome_label = new JLabel("Buscar por nome ou CPF");
 		nome_label.setHorizontalAlignment(SwingConstants.LEFT);
 		nome_label.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		nome_label.setBounds(21, 14, 128, 14);
+		nome_label.setBounds(21, 14, 148, 14);
 		frame.getContentPane().add(nome_label);
 
 		filtrar_input = new JTextField();
 		filtrar_input.setFont(new Font("Dialog", Font.PLAIN, 12));
 		filtrar_input.setColumns(10);
 		filtrar_input.setBackground(Color.WHITE);
-		filtrar_input.setBounds(159, 11, 137, 20);
+		filtrar_input.setBounds(167, 9, 137, 20);
 		frame.getContentPane().add(filtrar_input);
 
 		label_2 = new JLabel("cpf:");
@@ -182,7 +182,7 @@ public class TelaCorrentistas {
 				listagem();
 			}
 		});
-		button.setBounds(306, 9, 89, 23);
+		button.setBounds(314, 7, 89, 23);
 		frame.getContentPane().add(button);
 
 		nome_label = new JLabel("nome:");
@@ -212,7 +212,7 @@ public class TelaCorrentistas {
 			}
 		});
 		button_5.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		button_5.setBounds(402, 10, 89, 23);
+		button_5.setBounds(415, 8, 89, 23);
 		frame.getContentPane().add(button_5);
 
 		JLabel label_senha = new JLabel("senha:");
@@ -236,8 +236,7 @@ public class TelaCorrentistas {
 						clipboard.setContents(stringSelection, null);
 
 					} else {
-						JOptionPane.showMessageDialog(frame, "Nenhuma linha selecionada.", "Erro",
-								JOptionPane.WARNING_MESSAGE);
+						label.setText("Nenhum correntista selecionado.");
 					}
 				} catch (Exception erro) {
 					JOptionPane.showMessageDialog(frame, "Erro ao buscar CPF: " + erro.getMessage(), "Erro",

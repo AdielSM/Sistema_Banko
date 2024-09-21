@@ -35,30 +35,33 @@ public class TelaContas {
 	private JScrollPane scrollPane;
 	private JButton criar_button;
 	private JButton apagar_button;
-	private JButton button_4;
+	private JButton filtro_button;
 	private JTextField cpf_input;
 	private JTextField limite_input;
 	private JLabel label;
 	private JLabel cpf_label;
 	private JLabel label_8;
 	private JLabel limite_label;
-	private JButton verCorrentistasButton;
+	private JTextField correntista_input;
+	private JLabel nome_label;
+	private JTextField filtro_input;
+	private JButton limpar_button;
 
 	/**
 	 * Launch the application.
 	 */
-	//	public static void main(String[] args) {
-	//		EventQueue.invokeLater(new Runnable() {
-	//			public void run() {
-	//				try {
-	//					TelaContas window = new TelaContas();
-	//					window.frame.setVisible(true);
-	//				} catch (Exception e) {
-	//					e.printStackTrace();
-	//				}
-	//			}
-	//		});
-	//	}
+	// public static void main(String[] args) {
+	// EventQueue.invokeLater(new Runnable() {
+	// public void run() {
+	// try {
+	// TelaContas window = new TelaContas();
+	// window.frame.setVisible(true);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// });
+	// }
 
 	/**
 	 * Create the application.
@@ -104,22 +107,19 @@ public class TelaContas {
 		table.setShowGrid(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
-
 		criar_button = new JButton("Criar");
 		criar_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if(cpf_input.getText().isEmpty())
-					{
+					if (cpf_input.getText().isEmpty()) {
 						label.setText("Informe o CPF do correntista");
 						return;
 					}
 					String cpf = cpf_input.getText().trim();
-					
+
 					if (limite_input.getText().isEmpty()) {
 						Fachada.criarConta(cpf);
-					}
-					else {
+					} else {
 						Double limite = Double.parseDouble(limite_input.getText().trim());
 						Fachada.criarContaEspecial(cpf, limite);
 					}
@@ -127,9 +127,8 @@ public class TelaContas {
 					listagem();
 					cpf_input.setText("");
 					limite_input.setText("");
-					
-				}
-				catch(Exception ex) {
+
+				} catch (Exception ex) {
 					System.out.println(ex);
 					label.setText(ex.getMessage());
 				}
@@ -139,38 +138,36 @@ public class TelaContas {
 		criar_button.setBounds(26, 278, 95, 23);
 		frame.getContentPane().add(criar_button);
 
-		apagar_button = new JButton("Remover");
+		apagar_button = new JButton("Remover Conta");
 		apagar_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if (table.getSelectedRow() >= 0){
+					if (table.getSelectedRow() >= 0) {
 						int id = Integer.parseInt((String) table.getValueAt(table.getSelectedRow(), 0));
-						
+
 						Object[] options = { "Confirmar", "Cancelar" };
-						int escolha = JOptionPane.showOptionDialog(null, "Deseja remover a conta "+id, "Alerta",
+						int escolha = JOptionPane.showOptionDialog(null, "Deseja remover a conta " + id, "Alerta",
 								JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[1]);
-						if(escolha == 0) {
+						if (escolha == 0) {
 							Fachada.apagarConta(id);
 							label.setText("Conta " + id + " removida!");
 							listagem();
 						}
-					}
-					else
-						label.setText("selecione uma linha");
-				}
-				catch(Exception erro) {
+					} else
+						label.setText("selecione uma conta.");
+				} catch (Exception erro) {
 					label.setText(erro.getMessage());
 				}
 			}
 		});
 		apagar_button.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		apagar_button.setBounds(775, 174, 95, 23);
+		apagar_button.setBounds(724, 174, 146, 23);
 		frame.getContentPane().add(apagar_button);
 
 		label = new JLabel("");
 		label.setForeground(Color.BLUE);
 		label.setBackground(Color.RED);
-		label.setBounds(139, 287, 717, 14);
+		label.setBounds(153, 287, 717, 14);
 		frame.getContentPane().add(label);
 
 		cpf_label = new JLabel("CPF");
@@ -201,75 +198,146 @@ public class TelaContas {
 		limite_input.setBounds(125, 239, 71, 20);
 		frame.getContentPane().add(limite_input);
 
-		button_4 = new JButton("Listar");
-		button_4.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		button_4.addActionListener(new ActionListener() {
+		filtro_button = new JButton("Listar");
+		filtro_button.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		filtro_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				listagem();
 			}
 		});
-		button_4.setBounds(410, 8, 95, 23);
-		frame.getContentPane().add(button_4);
+		filtro_button.setBounds(420, 7, 95, 23);
+		frame.getContentPane().add(filtro_button);
 
-		verCorrentistasButton = new JButton("Ver correntistas");
-		verCorrentistasButton.addActionListener(new ActionListener() {
+		JLabel correntista_label = new JLabel("Correntista");
+		correntista_label.setHorizontalAlignment(SwingConstants.LEFT);
+		correntista_label.setFont(new Font("Dialog", Font.PLAIN, 12));
+		correntista_label.setBounds(563, 224, 71, 14);
+		frame.getContentPane().add(correntista_label);
+
+		correntista_input = new JTextField();
+		correntista_input.setFont(new Font("Dialog", Font.PLAIN, 12));
+		correntista_input.setColumns(10);
+		correntista_input.setBounds(636, 224, 169, 20);
+		frame.getContentPane().add(correntista_input);
+
+		JButton adicionar_corr_button = new JButton("Adicionar Correntista");
+		adicionar_corr_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					String correntistaCpf = correntista_input.getText().trim();
+					int row = table.getSelectedRow();
+					if (correntistaCpf.isEmpty()) {
+						label.setText("Informe o CPF do correntista.");
+						return;
+					}
+					if (row != -1) {
+						int id = Integer.parseInt(table.getValueAt(row, 0).toString());
+						Fachada.inserirCorrentistaConta(correntistaCpf, id);
+						label.setText("Correntista " + correntistaCpf + " cadastrado a conta " + id);
+						correntista_input.setText("");
+						listagem();
+					} else {
+						label.setText("selecione uma conta.");
+					}
+				} catch (Exception erro) {
+					label.setText(erro.getMessage());
+				}
+				
 			}
 		});
-//		button_5.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					if (table.getSelectedRow() >= 0){
-//						String id = (String) table.getValueAt( table.getSelectedRow(), 0);
-//						Evento ev = Fachada.localizarEvento(Integer.parseInt(id));
-//						String nomes= "Nomes dos participantes:";
-//						for(Participante p : ev.getParticipantes())
-//							nomes+="\n"+p.getNome();
-//
-//						JOptionPane.showMessageDialog(frame, nomes);
-//					}
-//					else
-//						label.setText("selecione uma linha");
-//				}
-//				catch(Exception erro) {
-//					label.setText(erro.getMessage());
-//				}
-//			}
-//		});
-		verCorrentistasButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		verCorrentistasButton.setBounds(605, 174, 135, 23);
-		frame.getContentPane().add(verCorrentistasButton);
+		adicionar_corr_button.setFont(new Font("Dialog", Font.PLAIN, 12));
+		adicionar_corr_button.setBounds(532, 252, 159, 23);
+		frame.getContentPane().add(adicionar_corr_button);
 
-	
+		JButton remover_corr_button = new JButton("Remover Correntista");
+		remover_corr_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String correntistaCpf = correntista_input.getText().trim();
+					int row = table.getSelectedRow();
+					if (correntistaCpf.isEmpty()) {
+						label.setText("Informe o CPF do correntista.");
+						return;
+					}
+					if (row != -1) {
+						int id = Integer.parseInt(table.getValueAt(row, 0).toString());
+						Fachada.removerCorrentistaConta(correntistaCpf, id);
+						label.setText("Correntista " + correntistaCpf + " removido da conta " + id);
+						correntista_input.setText("");
+						listagem();
+					} else {
+						label.setText("selecione uma conta.");
+					}
+				} catch (Exception erro) {
+					label.setText(erro.getMessage());
+				}
+			}
+		});
+		remover_corr_button.setFont(new Font("Dialog", Font.PLAIN, 12));
+		remover_corr_button.setBounds(697, 252, 159, 23);
+		frame.getContentPane().add(remover_corr_button);
+		
+		nome_label = new JLabel("Buscar por ID da conta ou CPF do correntista");
+		nome_label.setHorizontalAlignment(SwingConstants.LEFT);
+		nome_label.setFont(new Font("Dialog", Font.PLAIN, 12));
+		nome_label.setBounds(12, 14, 259, 14);
+		frame.getContentPane().add(nome_label);
+		
+		filtro_input = new JTextField();
+		filtro_input.setFont(new Font("Dialog", Font.PLAIN, 12));
+		filtro_input.setColumns(10);
+		filtro_input.setBackground(Color.WHITE);
+		filtro_input.setBounds(271, 10, 137, 20);
+		frame.getContentPane().add(filtro_input);
+		
+		limpar_button = new JButton("Limpar");
+		limpar_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filtro_input.setText("");
+				listagem();
+			}
+		});
+		limpar_button.setFont(new Font("Dialog", Font.PLAIN, 12));
+		limpar_button.setBounds(527, 7, 89, 23);
+		frame.getContentPane().add(limpar_button);
 
 	}
 
-	//*****************************
+	// *****************************
 	public void listagem() {
-		try{
-			List<Conta> lista = Fachada.listarContas();
+		try {
+			List<Conta> lista = Fachada.listarContas(filtro_input.getText());
 
-			//model contem todas as linhas e colunas da tabela
+			// model contem todas as linhas e colunas da tabela
 			DefaultTableModel model = new DefaultTableModel();
-			//colunas
+			// colunas
 			model.addColumn("id");
 			model.addColumn("data");
 			model.addColumn("saldo");
 			model.addColumn("limite");
 			model.addColumn("correntistas");
-			//linhas
-			for(Conta cc : lista) {
+			// linhas
+			for (Conta cc : lista) {
 				if (cc instanceof ContaEspecial cce) {
-					model.addRow(new Object[]{cc.getId()+"", cc.getData(), cc.getSaldo(), cce.getLimite(), cc.getCorrentistas()});
-				} else {					
-					model.addRow(new Object[]{cc.getId()+"", cc.getData(), cc.getSaldo(), "-", cc.getCorrentistas()});
+					model.addRow(new Object[] { cc.getId() + "", cc.getData(), cc.getSaldo(), cce.getLimite(),
+							cc.exibirCpfCorrentistas() });
+				} else {
+					model.addRow(
+							new Object[] { cc.getId() + "", cc.getData(), cc.getSaldo(), "-", cc.exibirCpfCorrentistas() });
 				}
 			}
 
 			table.setModel(model);
-			label_8.setText("resultados: "+lista.size()+ " contas - selecione uma linha");
-		}
-		catch(Exception erro){
+
+			table.getColumnModel().getColumn(0).setPreferredWidth(30); // id
+			table.getColumnModel().getColumn(1).setPreferredWidth(75); // data
+			table.getColumnModel().getColumn(2).setPreferredWidth(100); // saldo
+			table.getColumnModel().getColumn(3).setPreferredWidth(80); // limite
+			table.getColumnModel().getColumn(4).setPreferredWidth(556); // correntistas
+			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			label_8.setText("resultados: " + lista.size() + " contas - selecione uma linha");
+		} catch (Exception erro) {
+			System.out.println(erro);
 			label.setText(erro.getMessage());
 		}
 

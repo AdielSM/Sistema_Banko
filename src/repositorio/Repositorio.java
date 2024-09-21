@@ -116,18 +116,19 @@ public class Repositorio {
         Correntista corrCC;
         
         try {
-            String id, data, saldo, limite;
+            String id, data, saldo, limite, tipo;
             File f1 = new File( new File("contas.csv").getCanonicalPath() )  ;
 			Scanner arquivo1 = new Scanner(f1);	 
 			while(arquivo1.hasNextLine()) 	{
 				linha = arquivo1.nextLine().trim();		
 				partes = linha.split(";");	
 				//System.out.println(Arrays.toString(partes));
-				id = partes[0];
-				data = partes[1];
-				saldo = partes[2];
-				limite = partes[3];
-				if (limite.equals("-")) {
+				tipo = partes[0];
+				id = partes[1];
+				data = partes[2];
+				saldo = partes[3];
+				limite = partes[4];
+				if (tipo.equals("normal")) {
 					cc = new Conta(Integer.parseInt(id), data, Double.parseDouble(saldo));
 
 				} else {					
@@ -154,7 +155,7 @@ public class Repositorio {
 				cpf = partes[0];
 				nome = partes[1];
 				senha = partes[2];
-				ids = partes[3];
+				ids = partes[3].replace("-", "");
 				corrCC = new Correntista(cpf, nome, senha);
 				this.adicionar(corrCC);
 				
@@ -181,9 +182,9 @@ public class Repositorio {
 			for(Conta c : contas) 	{
 				  if (c instanceof ContaEspecial) {
 				        ContaEspecial contaEspecial = (ContaEspecial) c;
-				        arquivo1.write(c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + contaEspecial.getLimite() + "\n");
+				        arquivo1.write("especial" + ";" +  c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + contaEspecial.getLimite() + "\n");
 				    } else {
-				        arquivo1.write(c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + "-"+"\n");
+				        arquivo1.write("normal" + ";" + c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + "-"+"\n");
 				    }
 			} 
 			arquivo1.close();
