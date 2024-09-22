@@ -41,10 +41,4 @@ public class ContaEspecial extends Conta{
         throw new Exception("Saldo insuficiente e limite estourado");
 
     }
-
-    @Override
-    public void transferir(double valor, Conta destino) throws Exception {
-        this.debitar(valor);
-        destino.creditar(valor);
-    }
 }
