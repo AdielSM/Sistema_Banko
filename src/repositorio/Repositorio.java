@@ -122,7 +122,6 @@ public class Repositorio {
 			while(arquivo1.hasNextLine()) 	{
 				linha = arquivo1.nextLine().trim();		
 				partes = linha.split(";");	
-				//System.out.println(Arrays.toString(partes));
 				tipo = partes[0];
 				id = partes[1];
 				data = partes[2];
@@ -151,7 +150,6 @@ public class Repositorio {
 			while(arquivo2.hasNextLine()) 	{
 				linha = arquivo2.nextLine().trim();		
 				partes = linha.split(";");	
-				//System.out.println(Arrays.toString(partes));
 				cpf = partes[0];
 				nome = partes[1];
 				senha = partes[2];
@@ -161,7 +159,7 @@ public class Repositorio {
 				
 			    if(!ids.isEmpty()) {
 			        ids = ids.replace("[", "").replace("]", "");
-					for(String id : ids.split(",")){	//converter string em array
+					for(String id : ids.split(",")){
 						Conta conta = this.buscarConta(Integer.parseInt(id));
 						conta.adicionarCorrentista(corrCC);
 						corrCC.adicionarConta(conta);
@@ -180,8 +178,7 @@ public class Repositorio {
 	        File f = new File(Paths.get(".", "contas.csv").toAbsolutePath().normalize().toString());
 			FileWriter arquivo1 = new FileWriter(f); 
 			for(Conta c : contas) 	{
-				  if (c instanceof ContaEspecial) {
-				        ContaEspecial contaEspecial = (ContaEspecial) c;
+				  if (c instanceof ContaEspecial contaEspecial) {
 				        arquivo1.write("especial" + ";" +  c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + contaEspecial.getLimite() + "\n");
 				    } else {
 				        arquivo1.write("normal" + ";" + c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + "-"+"\n");

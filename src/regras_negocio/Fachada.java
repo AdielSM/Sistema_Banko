@@ -8,6 +8,7 @@ import repositorio.Repositorio;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Fachada {
 
@@ -158,7 +159,7 @@ public class Fachada {
      * @param id  o ID da conta
      * @throws Exception se o CPF do correntista não for encontrado ou se o ID da conta não for encontrado
      */
-    public static void inserirCorrentistaConta(String cpf, int id) throws Exception {
+    public static void inserirCorrentistaConta(int id, String cpf) throws Exception {
         Correntista correntista = repositorio.buscarCorrentista(cpf);
         if(correntista == null){
             throw new Exception("Cpf do correntista não encontrado");
@@ -183,7 +184,7 @@ public class Fachada {
      * @throws Exception se o CPF do correntista não for encontrado, se o ID da conta não for encontrado,
      *                   ou se o correntista for titular da conta
      */
-    public static void removerCorrentistaConta(String cpf, int id) throws Exception {
+    public static void removerCorrentistaConta(int id, String cpf) throws Exception {
         Correntista correntista = repositorio.buscarCorrentista(cpf);
         if(correntista == null){
             throw new Exception("Cpf do correntista não encontrado");
@@ -219,10 +220,19 @@ public class Fachada {
         if (conta.getSaldo() != 0) {
             throw new Exception("A conta não pode ser apagada pois ainda possui saldo");
         }
-
-        conta.desvincularCorrentistas();
+        Iterator<Correntista> iterator = conta.getCorrentistas().iterator();
+        while (iterator.hasNext()) {
+            Correntista correntista = iterator.next();
+            correntista.removerConta(conta);
+            iterator.remove();
+        }
+//        try {
+//        	conta.desvincularCorrentistas();
+//        } catch (Exception e) {
+        	
+//        }
         repositorio.removerConta(conta);
-        repositorio.salvarObjetos();
+    	repositorio.salvarObjetos();
     }
 
     /**

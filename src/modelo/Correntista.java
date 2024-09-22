@@ -38,13 +38,12 @@ public class Correntista {
     }
 
     public void removerConta(Conta conta) throws Exception {
-        boolean contemConta = this.contas.contains(conta);
-        if (contemConta) {
+        if (this.contas.contains(conta)) {
             this.contas.remove(conta);
             conta.removerCorrentista(this);
-            return;
+        } else {
+        	throw new Exception("Conta não associada ao correntista.");
         }
-        throw new Exception("Conta não associada ao correntista.");
     }
 
     public String getCpf() {
@@ -64,7 +63,7 @@ public class Correntista {
     	for (Conta c : this.contas) {
     		ids = ids + c.getId() + ",";
     	}
-    	if (!ids.isEmpty()) {    		
+    	if (!ids.isEmpty()) {		
     		ids = ids.substring(0, ids.length() - 1);
     	} else {
     		ids = "-";

@@ -146,7 +146,7 @@ public class TelaContas {
 						int id = Integer.parseInt((String) table.getValueAt(table.getSelectedRow(), 0));
 
 						Object[] options = { "Confirmar", "Cancelar" };
-						int escolha = JOptionPane.showOptionDialog(null, "Deseja remover a conta " + id, "Alerta",
+						int escolha = JOptionPane.showOptionDialog(null, "Deseja remover a conta " + id + "?", "Alerta",
 								JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[1]);
 						if (escolha == 0) {
 							Fachada.apagarConta(id);
@@ -232,7 +232,7 @@ public class TelaContas {
 					}
 					if (row != -1) {
 						int id = Integer.parseInt(table.getValueAt(row, 0).toString());
-						Fachada.inserirCorrentistaConta(correntistaCpf, id);
+						Fachada.inserirCorrentistaConta(id, correntistaCpf);
 						label.setText("Correntista " + correntistaCpf + " cadastrado a conta " + id);
 						correntista_input.setText("");
 						listagem();
@@ -261,7 +261,7 @@ public class TelaContas {
 					}
 					if (row != -1) {
 						int id = Integer.parseInt(table.getValueAt(row, 0).toString());
-						Fachada.removerCorrentistaConta(correntistaCpf, id);
+						Fachada.removerCorrentistaConta(id, correntistaCpf);
 						label.setText("Correntista " + correntistaCpf + " removido da conta " + id);
 						correntista_input.setText("");
 						listagem();
