@@ -154,7 +154,7 @@ public class TelaContas {
 							listagem();
 						}
 					} else
-						label.setText("selecione uma conta.");
+						label.setText("Selecione uma conta.");
 				} catch (Exception erro) {
 					label.setText(erro.getMessage());
 				}
@@ -237,7 +237,7 @@ public class TelaContas {
 						correntista_input.setText("");
 						listagem();
 					} else {
-						label.setText("selecione uma conta.");
+						label.setText("Selecione uma conta.");
 					}
 				} catch (Exception erro) {
 					label.setText(erro.getMessage());
@@ -266,7 +266,7 @@ public class TelaContas {
 						correntista_input.setText("");
 						listagem();
 					} else {
-						label.setText("selecione uma conta.");
+						label.setText("Selecione uma conta.");
 					}
 				} catch (Exception erro) {
 					label.setText(erro.getMessage());
