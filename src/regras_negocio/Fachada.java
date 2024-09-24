@@ -226,11 +226,6 @@ public class Fachada {
             correntista.removerConta(conta);
             iterator.remove();
         }
-//        try {
-//        	conta.desvincularCorrentistas();
-//        } catch (Exception e) {
-        	
-//        }
         repositorio.removerConta(conta);
     	repositorio.salvarObjetos();
     }
@@ -321,6 +316,15 @@ public class Fachada {
         conta1.transferir(valor, conta2);
         
         repositorio.salvarObjetos();
+    }
+    
+    public static String getIdsContasPorCpf(String cpf) {
+    	String ids = "";
+    	Correntista correntista = repositorio.buscarCorrentista(cpf);
+    	if (correntista != null) {
+    		ids = correntista.getContasIds();
+    	}
+    	return ids;
     }
 
 }

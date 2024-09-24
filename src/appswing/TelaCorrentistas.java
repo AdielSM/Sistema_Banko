@@ -221,7 +221,7 @@ public class TelaCorrentistas {
 		label_senha.setBounds(21, 295, 71, 14);
 		frame.getContentPane().add(label_senha);
 
-		JButton btnVerId = new JButton("Ver ID");
+		JButton btnVerId = new JButton("Ver IDs das Contas");
 		btnVerId.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -229,7 +229,7 @@ public class TelaCorrentistas {
 					if (row != -1) {
 						String cpf = table.getValueAt(row, 0).toString();
 						
-						JOptionPane.showMessageDialog(btnVerId, "ID copiado: " + cpf);
+						JOptionPane.showMessageDialog(btnVerId, "Contas: " + Fachada.getIdsContasPorCpf(cpf));
 
 						StringSelection stringSelection = new StringSelection(cpf);
 						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -245,7 +245,7 @@ public class TelaCorrentistas {
 
 			}
 		});
-		btnVerId.setBounds(594, 203, 101, 27);
+		btnVerId.setBounds(549, 203, 146, 27);
 		frame.getContentPane().add(btnVerId);
 	}
 
