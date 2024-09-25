@@ -127,7 +127,7 @@ public class Repositorio {
 				data = partes[2];
 				saldo = partes[3];
 				limite = partes[4];
-				if (tipo.equals("normal")) {
+				if (tipo.equals("CONTA")) {
 					cc = new Conta(Integer.parseInt(id), data, Double.parseDouble(saldo));
 
 				} else {					
@@ -179,9 +179,9 @@ public class Repositorio {
 			FileWriter arquivo1 = new FileWriter(f); 
 			for(Conta c : contas) 	{
 				  if (c instanceof ContaEspecial contaEspecial) {
-				        arquivo1.write("especial" + ";" +  c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + contaEspecial.getLimite() + "\n");
+				        arquivo1.write("CONTAESPECIAL" + ";" +  c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + contaEspecial.getLimite() + "\n");
 				    } else {
-				        arquivo1.write("normal" + ";" + c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + "-"+"\n");
+				        arquivo1.write("CONTA" + ";" + c.getId() + ";" + c.getData() + ";" + c.getSaldo() + ";" + "-"+"\n");
 				    }
 			} 
 			arquivo1.close();
