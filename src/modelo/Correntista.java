@@ -80,8 +80,6 @@ public class Correntista {
     public boolean correntistaTitularConta(){
         for (Conta conta : this.contas){
         	ArrayList<Correntista> correntistas = conta.getCorrentistas();
-        	System.out.println(correntistas);
-        	System.out.println(correntistas.isEmpty());
         	if (correntistas.isEmpty()) {
         		continue;
         	} else {
